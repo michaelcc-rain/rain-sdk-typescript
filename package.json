@@ -1,6 +1,6 @@
 {
   "name": "rain-hello-world",
-  "version": "0.0.1-alpha.0",
+  "version": "0.1.0-alpha.1",
   "description": "The official TypeScript library for the Rain Hello World API",
   "author": "Rain Hello World <support@raincards.xyz>",
   "types": "dist/index.d.ts",
