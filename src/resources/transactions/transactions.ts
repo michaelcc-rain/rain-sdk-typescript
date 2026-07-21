@@ -66,17 +66,17 @@ export class Transactions extends APIResource {
  * transaction amount, merchant, and the associated user.
  */
 export type IssuingTransaction =
-  | IssuingTransaction.UnionMember0
-  | IssuingTransaction.UnionMember1
-  | IssuingTransaction.UnionMember2
-  | IssuingTransaction.UnionMember3;
+  | IssuingTransaction.SpendTransaction
+  | IssuingTransaction.CollateralTransaction
+  | IssuingTransaction.PaymentTransaction
+  | IssuingTransaction.FeeTransaction;
 
 export namespace IssuingTransaction {
   /**
    * Represents a transaction of type 'spend'. This includes details such as the
    * transaction amount, merchant, and the associated user.
    */
-  export interface UnionMember0 {
+  export interface SpendTransaction {
     /**
      * The unique identifier of the transaction
      */
@@ -86,7 +86,7 @@ export namespace IssuingTransaction {
      * Details specific to a spend transaction, including merchant, amount, and user
      * information.
      */
-    spend: UnionMember0.Spend;
+    spend: SpendTransaction.Spend;
 
     /**
      * The type of transaction
@@ -94,7 +94,7 @@ export namespace IssuingTransaction {
     type: 'spend';
   }
 
-  export namespace UnionMember0 {
+  export namespace SpendTransaction {
     /**
      * Details specific to a spend transaction, including merchant, amount, and user
      * information.
@@ -231,7 +231,7 @@ export namespace IssuingTransaction {
    * Represents a collateral transaction, where a user provides collateral for a
    * transaction.
    */
-  export interface UnionMember1 {
+  export interface CollateralTransaction {
     /**
      * The unique identifier of the transaction
      */
@@ -241,7 +241,7 @@ export namespace IssuingTransaction {
      * Details of the collateral transaction, including amount, currency, and
      * transaction details.
      */
-    collateral: UnionMember1.Collateral;
+    collateral: CollateralTransaction.Collateral;
 
     /**
      * The type of transaction, in this case, a collateral transaction
@@ -249,7 +249,7 @@ export namespace IssuingTransaction {
     type: 'collateral';
   }
 
-  export namespace UnionMember1 {
+  export namespace CollateralTransaction {
     /**
      * Details of the collateral transaction, including amount, currency, and
      * transaction details.
@@ -306,7 +306,7 @@ export namespace IssuingTransaction {
    * Represents a payment transaction, where a payment is made for a particular
    * service or product.
    */
-  export interface UnionMember2 {
+  export interface PaymentTransaction {
     /**
      * The unique identifier of the payment transaction
      */
@@ -315,7 +315,7 @@ export namespace IssuingTransaction {
     /**
      * Details of the payment transaction, including amount, currency, and status.
      */
-    payment: UnionMember2.Payment;
+    payment: PaymentTransaction.Payment;
 
     /**
      * The type of transaction
@@ -323,7 +323,7 @@ export namespace IssuingTransaction {
     type: 'payment';
   }
 
-  export namespace UnionMember2 {
+  export namespace PaymentTransaction {
     /**
      * Details of the payment transaction, including amount, currency, and status.
      */
@@ -383,7 +383,7 @@ export namespace IssuingTransaction {
   /**
    * Represents a fee transaction, where a fee is charged for a service or product.
    */
-  export interface UnionMember3 {
+  export interface FeeTransaction {
     /**
      * The identifier of the fee transaction
      */
@@ -392,7 +392,7 @@ export namespace IssuingTransaction {
     /**
      * Details of the fee transaction, including amount, description, and status.
      */
-    fee: UnionMember3.Fee;
+    fee: FeeTransaction.Fee;
 
     /**
      * The type of transaction, in this case, a fee transaction
@@ -400,7 +400,7 @@ export namespace IssuingTransaction {
     type: 'fee';
   }
 
-  export namespace UnionMember3 {
+  export namespace FeeTransaction {
     /**
      * Details of the fee transaction, including amount, description, and status.
      */

@@ -12,7 +12,11 @@ describe('resource signatures', () => {
   test.skip('retrievePaymentSignature: only required params', async () => {
     const responsePromise = client.users.signatures.retrievePaymentSignature(
       '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',
-      { token: 'token', adminAddress: 'adminAddress', amount: 'amount' },
+      {
+        token: 'token',
+        adminAddress: 'adminAddress',
+        amount: 'amount',
+      },
     );
     const rawResponse = await responsePromise.asResponse();
     expect(rawResponse).toBeInstanceOf(Response);
@@ -27,7 +31,12 @@ describe('resource signatures', () => {
   test.skip('retrievePaymentSignature: required and optional params', async () => {
     const response = await client.users.signatures.retrievePaymentSignature(
       '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',
-      { token: 'token', adminAddress: 'adminAddress', amount: 'amount', chainId: 0 },
+      {
+        token: 'token',
+        adminAddress: 'adminAddress',
+        amount: 'amount',
+        chainId: 0,
+      },
     );
   });
 

@@ -95,8 +95,8 @@ import {
 import { isEmptyObj } from './internal/utils/values';
 
 const environments = {
-  production: 'https://api-dev.raincards.xyz/v1/issuing',
-  environment_1: 'https://api.raincards.xyz/v1/issuing',
+  dev: 'https://api-dev.raincards.xyz/v1/issuing',
+  production: 'https://api.raincards.xyz/v1/issuing',
 };
 type Environment = keyof typeof environments;
 
@@ -110,8 +110,8 @@ export interface ClientOptions {
    * Specifies the environment to use for the API.
    *
    * Each environment maps to a different base URL:
-   * - `production` corresponds to `https://api-dev.raincards.xyz/v1/issuing`
-   * - `environment_1` corresponds to `https://api.raincards.xyz/v1/issuing`
+   * - `dev` corresponds to `https://api-dev.raincards.xyz/v1/issuing`
+   * - `production` corresponds to `https://api.raincards.xyz/v1/issuing`
    */
   environment?: Environment | undefined;
 
@@ -206,7 +206,7 @@ export class RainHelloWorld {
    * API Client for interfacing with the Rain Hello World API.
    *
    * @param {string | undefined} [opts.apiKey=process.env['RAIN_HELLO_WORLD_API_KEY'] ?? undefined]
-   * @param {Environment} [opts.environment=production] - Specifies the environment URL to use for the API.
+   * @param {Environment} [opts.environment=dev] - Specifies the environment URL to use for the API.
    * @param {string} [opts.baseURL=process.env['RAIN_HELLO_WORLD_BASE_URL'] ?? https://api-dev.raincards.xyz/v1/issuing] - Override the default base URL for the API.
    * @param {number} [opts.timeout=1 minute] - The maximum amount of time (in milliseconds) the client will wait for a response before timing out.
    * @param {MergedRequestInit} [opts.fetchOptions] - Additional `RequestInit` options to be passed to `fetch` calls.
@@ -230,7 +230,7 @@ export class RainHelloWorld {
       apiKey,
       ...opts,
       baseURL,
-      environment: opts.environment ?? 'production',
+      environment: opts.environment ?? 'dev',
     };
 
     if (baseURL && opts.environment) {
@@ -239,7 +239,7 @@ export class RainHelloWorld {
       );
     }
 
-    this.baseURL = options.baseURL || environments[options.environment || 'production'];
+    this.baseURL = options.baseURL || environments[options.environment || 'dev'];
     this.timeout = options.timeout ?? RainHelloWorld.DEFAULT_TIMEOUT /* 1 minute */;
     this.logger = options.logger ?? console;
     const defaultLogLevel = 'warn';
@@ -283,7 +283,7 @@ export class RainHelloWorld {
    * Check whether the base URL is set to its default.
    */
   #baseURLOverridden(): boolean {
-    return this.baseURL !== environments[this._options.environment || 'production'];
+    return this.baseURL !== environments[this._options.environment || 'dev'];
   }
 
   protected defaultQuery(): Record<string, string | undefined> | undefined {
@@ -561,9 +561,10 @@ export class RainHelloWorld {
     controller: AbortController,
   ): Promise<Response> {
     const { signal, method, ...options } = init || {};
-    if (signal) signal.addEventListener('abort', () => controller.abort());
+    const abort = this._makeAbort(controller);
+    if (signal) signal.addEventListener('abort', abort, { once: true });
 
-    const timeout = setTimeout(() => controller.abort(), ms);
+    const timeout = setTimeout(abort, ms);
 
     const isReadableBody =
       ((globalThis as any).ReadableStream && options.body instanceof (globalThis as any).ReadableStream) ||
@@ -728,6 +729,12 @@ export class RainHelloWorld {
     this.validateHeaders(headers);
 
     return headers.values;
+  }
+
+  private _makeAbort(controller: AbortController) {
+    // note: we can't just inline this method inside `fetchWithTimeout()` because then the closure
+    //       would capture all request options, and cause a memory leak.
+    return () => controller.abort();
   }
 
   private buildBody({ options: { body, headers: rawHeaders } }: { options: FinalRequestOptions }): {

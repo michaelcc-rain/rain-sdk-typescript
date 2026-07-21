@@ -19,7 +19,12 @@ describe('resource company', () => {
         postalCode: 'postalCode',
         region: 'region',
       },
-      entity: { name: 'name', registrationNumber: 'registrationNumber', taxId: 'taxId', website: 'website' },
+      entity: {
+        name: 'name',
+        registrationNumber: 'registrationNumber',
+        taxId: 'taxId',
+        website: 'website',
+      },
       initialUser: {
         address: {
           city: 'city',

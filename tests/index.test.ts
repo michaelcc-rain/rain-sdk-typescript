@@ -87,7 +87,11 @@ describe('instantiate client', () => {
         error: jest.fn(),
       };
 
-      const client = new RainHelloWorld({ logger: logger, logLevel: 'debug', apiKey: 'My API Key' });
+      const client = new RainHelloWorld({
+        logger: logger,
+        logLevel: 'debug',
+        apiKey: 'My API Key',
+      });
 
       await forceAPIResponseForClient(client);
       expect(debugMock).toHaveBeenCalled();
@@ -107,7 +111,11 @@ describe('instantiate client', () => {
         error: jest.fn(),
       };
 
-      const client = new RainHelloWorld({ logger: logger, logLevel: 'info', apiKey: 'My API Key' });
+      const client = new RainHelloWorld({
+        logger: logger,
+        logLevel: 'info',
+        apiKey: 'My API Key',
+      });
 
       await forceAPIResponseForClient(client);
       expect(debugMock).not.toHaveBeenCalled();
@@ -157,7 +165,11 @@ describe('instantiate client', () => {
       };
 
       process.env['RAIN_HELLO_WORLD_LOG'] = 'debug';
-      const client = new RainHelloWorld({ logger: logger, logLevel: 'off', apiKey: 'My API Key' });
+      const client = new RainHelloWorld({
+        logger: logger,
+        logLevel: 'off',
+        apiKey: 'My API Key',
+      });
 
       await forceAPIResponseForClient(client);
       expect(debugMock).not.toHaveBeenCalled();
@@ -173,7 +185,11 @@ describe('instantiate client', () => {
       };
 
       process.env['RAIN_HELLO_WORLD_LOG'] = 'not a log level';
-      const client = new RainHelloWorld({ logger: logger, logLevel: 'debug', apiKey: 'My API Key' });
+      const client = new RainHelloWorld({
+        logger: logger,
+        logLevel: 'debug',
+        apiKey: 'My API Key',
+      });
       expect(client.logLevel).toBe('debug');
       expect(warnMock).not.toHaveBeenCalled();
     });
@@ -325,12 +341,16 @@ describe('instantiate client', () => {
       process.env['RAIN_HELLO_WORLD_BASE_URL'] = 'https://example.com/from_env';
 
       expect(
-        () => new RainHelloWorld({ apiKey: 'My API Key', environment: 'production' }),
+        () => new RainHelloWorld({ apiKey: 'My API Key', environment: 'dev' }),
       ).toThrowErrorMatchingInlineSnapshot(
         `"Ambiguous URL; The \`baseURL\` option (or RAIN_HELLO_WORLD_BASE_URL env var) and the \`environment\` option are given. If you want to use the environment you must pass baseURL: null"`,
       );
 
-      const client = new RainHelloWorld({ apiKey: 'My API Key', baseURL: null, environment: 'production' });
+      const client = new RainHelloWorld({
+        apiKey: 'My API Key',
+        baseURL: null,
+        environment: 'dev',
+      });
       expect(client.baseURL).toEqual('https://api-dev.raincards.xyz/v1/issuing');
     });
 
@@ -562,7 +582,11 @@ describe('retries', () => {
       return new Response(JSON.stringify({ a: 1 }), { headers: { 'Content-Type': 'application/json' } });
     };
 
-    const client = new RainHelloWorld({ apiKey: 'My API Key', timeout: 10, fetch: testFetch });
+    const client = new RainHelloWorld({
+      apiKey: 'My API Key',
+      timeout: 10,
+      fetch: testFetch,
+    });
 
     expect(await client.request({ path: '/foo', method: 'get' })).toEqual({ a: 1 });
     expect(count).toEqual(2);
@@ -592,7 +616,11 @@ describe('retries', () => {
       return new Response(JSON.stringify({ a: 1 }), { headers: { 'Content-Type': 'application/json' } });
     };
 
-    const client = new RainHelloWorld({ apiKey: 'My API Key', fetch: testFetch, maxRetries: 4 });
+    const client = new RainHelloWorld({
+      apiKey: 'My API Key',
+      fetch: testFetch,
+      maxRetries: 4,
+    });
 
     expect(await client.request({ path: '/foo', method: 'get' })).toEqual({ a: 1 });
 
@@ -616,7 +644,11 @@ describe('retries', () => {
       capturedRequest = init;
       return new Response(JSON.stringify({ a: 1 }), { headers: { 'Content-Type': 'application/json' } });
     };
-    const client = new RainHelloWorld({ apiKey: 'My API Key', fetch: testFetch, maxRetries: 4 });
+    const client = new RainHelloWorld({
+      apiKey: 'My API Key',
+      fetch: testFetch,
+      maxRetries: 4,
+    });
 
     expect(
       await client.request({
@@ -678,7 +710,11 @@ describe('retries', () => {
       capturedRequest = init;
       return new Response(JSON.stringify({ a: 1 }), { headers: { 'Content-Type': 'application/json' } });
     };
-    const client = new RainHelloWorld({ apiKey: 'My API Key', fetch: testFetch, maxRetries: 4 });
+    const client = new RainHelloWorld({
+      apiKey: 'My API Key',
+      fetch: testFetch,
+      maxRetries: 4,
+    });
 
     expect(
       await client.request({

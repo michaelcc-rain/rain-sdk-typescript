@@ -11,11 +11,8 @@ It is generated with [Stainless](https://www.stainless.com/).
 ## Installation
 
 ```sh
-npm install git+ssh://git@github.com:stainless-sdks/rain-hello-world-typescript.git
+npm install rain-hello-world
 ```
-
-> [!NOTE]
-> Once this package is [published to npm](https://www.stainless.com/docs/guides/publish), this will become: `npm install rain-hello-world`
 
 ## Usage
 
@@ -27,75 +24,15 @@ import RainHelloWorld from 'rain-hello-world';
 
 const client = new RainHelloWorld({
   apiKey: process.env['RAIN_HELLO_WORLD_API_KEY'], // This is the default and can be omitted
-  environment: 'environment_1', // defaults to 'production'
+  environment: 'production', // defaults to 'dev'
 });
 
-const issuingCompany = await client.applications.company.create({
-  address: {
-    city: 'city',
-    country: 'country',
-    countryCode: 'xx',
-    line1: 'line1',
-    postalCode: 'postalCode',
-    region: 'region',
-  },
-  entity: { name: 'name', registrationNumber: 'registrationNumber', taxId: 'taxId', website: 'website' },
-  initialUser: {
-    address: {
-      city: 'city',
-      country: 'country',
-      countryCode: 'xx',
-      line1: 'line1',
-      postalCode: 'postalCode',
-      region: 'region',
-    },
-    birthDate: '2000-01-01',
-    countryOfIssue: 'xx',
-    email: 'email',
-    firstName: 'firstName',
-    lastName: 'lastName',
-    nationalId: 'nationalId',
-    ipAddress: 'ipAddress',
-    isTermsOfServiceAccepted: true,
-  },
-  name: 'REPLACE_ME',
-  representatives: [
-    {
-      address: {
-        city: 'city',
-        country: 'country',
-        countryCode: 'xx',
-        line1: 'line1',
-        postalCode: 'postalCode',
-        region: 'region',
-      },
-      birthDate: '2000-01-01',
-      countryOfIssue: 'xx',
-      email: 'email',
-      firstName: 'firstName',
-      lastName: 'lastName',
-      nationalId: 'nationalId',
-    },
-  ],
-  ultimateBeneficialOwners: [
-    {
-      address: {
-        city: 'city',
-        country: 'country',
-        countryCode: 'xx',
-        line1: 'line1',
-        postalCode: 'postalCode',
-        region: 'region',
-      },
-      birthDate: '2000-01-01',
-      countryOfIssue: 'xx',
-      email: 'email',
-      firstName: 'firstName',
-      lastName: 'lastName',
-      nationalId: 'nationalId',
-    },
-  ],
-});
+const issuingChargeCreateResponse = await client.companies.charge(
+  '182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e',
+  { amount: 123, description: 'Custom fee charge' },
+);
+
+console.log(issuingChargeCreateResponse.id);
 ```
 
 ### Request & Response types
@@ -108,78 +45,15 @@ import RainHelloWorld from 'rain-hello-world';
 
 const client = new RainHelloWorld({
   apiKey: process.env['RAIN_HELLO_WORLD_API_KEY'], // This is the default and can be omitted
-  environment: 'environment_1', // defaults to 'production'
+  environment: 'production', // defaults to 'dev'
 });
 
-const params: RainHelloWorld.Applications.CompanyCreateParams = {
-  address: {
-    city: 'city',
-    country: 'country',
-    countryCode: 'xx',
-    line1: 'line1',
-    postalCode: 'postalCode',
-    region: 'region',
-  },
-  entity: { name: 'name', registrationNumber: 'registrationNumber', taxId: 'taxId', website: 'website' },
-  initialUser: {
-    address: {
-      city: 'city',
-      country: 'country',
-      countryCode: 'xx',
-      line1: 'line1',
-      postalCode: 'postalCode',
-      region: 'region',
-    },
-    birthDate: '2000-01-01',
-    countryOfIssue: 'xx',
-    email: 'email',
-    firstName: 'firstName',
-    lastName: 'lastName',
-    nationalId: 'nationalId',
-    ipAddress: 'ipAddress',
-    isTermsOfServiceAccepted: true,
-  },
-  name: 'REPLACE_ME',
-  representatives: [
-    {
-      address: {
-        city: 'city',
-        country: 'country',
-        countryCode: 'xx',
-        line1: 'line1',
-        postalCode: 'postalCode',
-        region: 'region',
-      },
-      birthDate: '2000-01-01',
-      countryOfIssue: 'xx',
-      email: 'email',
-      firstName: 'firstName',
-      lastName: 'lastName',
-      nationalId: 'nationalId',
-    },
-  ],
-  ultimateBeneficialOwners: [
-    {
-      address: {
-        city: 'city',
-        country: 'country',
-        countryCode: 'xx',
-        line1: 'line1',
-        postalCode: 'postalCode',
-        region: 'region',
-      },
-      birthDate: '2000-01-01',
-      countryOfIssue: 'xx',
-      email: 'email',
-      firstName: 'firstName',
-      lastName: 'lastName',
-      nationalId: 'nationalId',
-    },
-  ],
+const params: RainHelloWorld.CompanyChargeParams = {
+  amount: 123,
+  description: 'Custom fee charge',
 };
-const issuingCompany: RainHelloWorld.Applications.IssuingCompany = await client.applications.company.create(
-  params,
-);
+const issuingChargeCreateResponse: RainHelloWorld.IssuingChargeCreateResponse =
+  await client.companies.charge('182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e', params);
 ```
 
 Documentation for each method, request param, and response field are available in docstrings and will appear on hover in most modern editors.
@@ -231,73 +105,8 @@ a subclass of `APIError` will be thrown:
 
 <!-- prettier-ignore -->
 ```ts
-const issuingCompany = await client.applications.company
-  .create({
-    address: {
-      city: 'city',
-      country: 'country',
-      countryCode: 'xx',
-      line1: 'line1',
-      postalCode: 'postalCode',
-      region: 'region',
-    },
-    entity: { name: 'name', registrationNumber: 'registrationNumber', taxId: 'taxId', website: 'website' },
-    initialUser: {
-      address: {
-        city: 'city',
-        country: 'country',
-        countryCode: 'xx',
-        line1: 'line1',
-        postalCode: 'postalCode',
-        region: 'region',
-      },
-      birthDate: '2000-01-01',
-      countryOfIssue: 'xx',
-      email: 'email',
-      firstName: 'firstName',
-      lastName: 'lastName',
-      nationalId: 'nationalId',
-      ipAddress: 'ipAddress',
-      isTermsOfServiceAccepted: true,
-    },
-    name: 'REPLACE_ME',
-    representatives: [
-      {
-        address: {
-          city: 'city',
-          country: 'country',
-          countryCode: 'xx',
-          line1: 'line1',
-          postalCode: 'postalCode',
-          region: 'region',
-        },
-        birthDate: '2000-01-01',
-        countryOfIssue: 'xx',
-        email: 'email',
-        firstName: 'firstName',
-        lastName: 'lastName',
-        nationalId: 'nationalId',
-      },
-    ],
-    ultimateBeneficialOwners: [
-      {
-        address: {
-          city: 'city',
-          country: 'country',
-          countryCode: 'xx',
-          line1: 'line1',
-          postalCode: 'postalCode',
-          region: 'region',
-        },
-        birthDate: '2000-01-01',
-        countryOfIssue: 'xx',
-        email: 'email',
-        firstName: 'firstName',
-        lastName: 'lastName',
-        nationalId: 'nationalId',
-      },
-    ],
-  })
+const issuingChargeCreateResponse = await client.companies
+  .charge('182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e', { amount: 123, description: 'Custom fee charge' })
   .catch(async (err) => {
     if (err instanceof RainHelloWorld.APIError) {
       console.log(err.status); // 400
@@ -338,7 +147,7 @@ const client = new RainHelloWorld({
 });
 
 // Or, configure per-request:
-await client.applications.company.create({ address: { city: 'city', country: 'country', countryCode: 'xx', line1: 'line1', postalCode: 'postalCode', region: 'region' }, entity: { name: 'name', registrationNumber: 'registrationNumber', taxId: 'taxId', website: 'website' }, initialUser: { address: { city: 'city', country: 'country', countryCode: 'xx', line1: 'line1', postalCode: 'postalCode', region: 'region' }, birthDate: '2000-01-01', countryOfIssue: 'xx', email: 'email', firstName: 'firstName', lastName: 'lastName', nationalId: 'nationalId', ipAddress: 'ipAddress', isTermsOfServiceAccepted: true }, name: 'REPLACE_ME', representatives: [{ address: { city: 'city', country: 'country', countryCode: 'xx', line1: 'line1', postalCode: 'postalCode', region: 'region' }, birthDate: '2000-01-01', countryOfIssue: 'xx', email: 'email', firstName: 'firstName', lastName: 'lastName', nationalId: 'nationalId' }], ultimateBeneficialOwners: [{ address: { city: 'city', country: 'country', countryCode: 'xx', line1: 'line1', postalCode: 'postalCode', region: 'region' }, birthDate: '2000-01-01', countryOfIssue: 'xx', email: 'email', firstName: 'firstName', lastName: 'lastName', nationalId: 'nationalId' }] }, {
+await client.companies.charge('182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e', { amount: 123, description: 'Custom fee charge' }, {
   maxRetries: 5,
 });
 ```
@@ -355,7 +164,7 @@ const client = new RainHelloWorld({
 });
 
 // Override per-request:
-await client.applications.company.create({ address: { city: 'city', country: 'country', countryCode: 'xx', line1: 'line1', postalCode: 'postalCode', region: 'region' }, entity: { name: 'name', registrationNumber: 'registrationNumber', taxId: 'taxId', website: 'website' }, initialUser: { address: { city: 'city', country: 'country', countryCode: 'xx', line1: 'line1', postalCode: 'postalCode', region: 'region' }, birthDate: '2000-01-01', countryOfIssue: 'xx', email: 'email', firstName: 'firstName', lastName: 'lastName', nationalId: 'nationalId', ipAddress: 'ipAddress', isTermsOfServiceAccepted: true }, name: 'REPLACE_ME', representatives: [{ address: { city: 'city', country: 'country', countryCode: 'xx', line1: 'line1', postalCode: 'postalCode', region: 'region' }, birthDate: '2000-01-01', countryOfIssue: 'xx', email: 'email', firstName: 'firstName', lastName: 'lastName', nationalId: 'nationalId' }], ultimateBeneficialOwners: [{ address: { city: 'city', country: 'country', countryCode: 'xx', line1: 'line1', postalCode: 'postalCode', region: 'region' }, birthDate: '2000-01-01', countryOfIssue: 'xx', email: 'email', firstName: 'firstName', lastName: 'lastName', nationalId: 'nationalId' }] }, {
+await client.companies.charge('182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e', { amount: 123, description: 'Custom fee charge' }, {
   timeout: 5 * 1000,
 });
 ```
@@ -378,147 +187,17 @@ Unlike `.asResponse()` this method consumes the body, returning once it is parse
 ```ts
 const client = new RainHelloWorld();
 
-const response = await client.applications.company
-  .create({
-    address: {
-      city: 'city',
-      country: 'country',
-      countryCode: 'xx',
-      line1: 'line1',
-      postalCode: 'postalCode',
-      region: 'region',
-    },
-    entity: { name: 'name', registrationNumber: 'registrationNumber', taxId: 'taxId', website: 'website' },
-    initialUser: {
-      address: {
-        city: 'city',
-        country: 'country',
-        countryCode: 'xx',
-        line1: 'line1',
-        postalCode: 'postalCode',
-        region: 'region',
-      },
-      birthDate: '2000-01-01',
-      countryOfIssue: 'xx',
-      email: 'email',
-      firstName: 'firstName',
-      lastName: 'lastName',
-      nationalId: 'nationalId',
-      ipAddress: 'ipAddress',
-      isTermsOfServiceAccepted: true,
-    },
-    name: 'REPLACE_ME',
-    representatives: [
-      {
-        address: {
-          city: 'city',
-          country: 'country',
-          countryCode: 'xx',
-          line1: 'line1',
-          postalCode: 'postalCode',
-          region: 'region',
-        },
-        birthDate: '2000-01-01',
-        countryOfIssue: 'xx',
-        email: 'email',
-        firstName: 'firstName',
-        lastName: 'lastName',
-        nationalId: 'nationalId',
-      },
-    ],
-    ultimateBeneficialOwners: [
-      {
-        address: {
-          city: 'city',
-          country: 'country',
-          countryCode: 'xx',
-          line1: 'line1',
-          postalCode: 'postalCode',
-          region: 'region',
-        },
-        birthDate: '2000-01-01',
-        countryOfIssue: 'xx',
-        email: 'email',
-        firstName: 'firstName',
-        lastName: 'lastName',
-        nationalId: 'nationalId',
-      },
-    ],
-  })
+const response = await client.companies
+  .charge('182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e', { amount: 123, description: 'Custom fee charge' })
   .asResponse();
 console.log(response.headers.get('X-My-Header'));
 console.log(response.statusText); // access the underlying Response object
 
-const { data: issuingCompany, response: raw } = await client.applications.company
-  .create({
-    address: {
-      city: 'city',
-      country: 'country',
-      countryCode: 'xx',
-      line1: 'line1',
-      postalCode: 'postalCode',
-      region: 'region',
-    },
-    entity: { name: 'name', registrationNumber: 'registrationNumber', taxId: 'taxId', website: 'website' },
-    initialUser: {
-      address: {
-        city: 'city',
-        country: 'country',
-        countryCode: 'xx',
-        line1: 'line1',
-        postalCode: 'postalCode',
-        region: 'region',
-      },
-      birthDate: '2000-01-01',
-      countryOfIssue: 'xx',
-      email: 'email',
-      firstName: 'firstName',
-      lastName: 'lastName',
-      nationalId: 'nationalId',
-      ipAddress: 'ipAddress',
-      isTermsOfServiceAccepted: true,
-    },
-    name: 'REPLACE_ME',
-    representatives: [
-      {
-        address: {
-          city: 'city',
-          country: 'country',
-          countryCode: 'xx',
-          line1: 'line1',
-          postalCode: 'postalCode',
-          region: 'region',
-        },
-        birthDate: '2000-01-01',
-        countryOfIssue: 'xx',
-        email: 'email',
-        firstName: 'firstName',
-        lastName: 'lastName',
-        nationalId: 'nationalId',
-      },
-    ],
-    ultimateBeneficialOwners: [
-      {
-        address: {
-          city: 'city',
-          country: 'country',
-          countryCode: 'xx',
-          line1: 'line1',
-          postalCode: 'postalCode',
-          region: 'region',
-        },
-        birthDate: '2000-01-01',
-        countryOfIssue: 'xx',
-        email: 'email',
-        firstName: 'firstName',
-        lastName: 'lastName',
-        nationalId: 'nationalId',
-      },
-    ],
-  })
+const { data: issuingChargeCreateResponse, response: raw } = await client.companies
+  .charge('182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e', { amount: 123, description: 'Custom fee charge' })
   .withResponse();
 console.log(raw.headers.get('X-My-Header'));
-console.log(issuingCompany);
+console.log(issuingChargeCreateResponse.id);
 ```
 
 ### Logging
@@ -598,7 +277,7 @@ parameter. This library doesn't validate at runtime that the request matches the
 send will be sent as-is.
 
 ```ts
-client.applications.company.create({
+client.companies.charge({
   // ...
   // @ts-expect-error baz is not yet public
   baz: 'undocumented option',
@@ -708,7 +387,7 @@ This package generally follows [SemVer](https://semver.org/spec/v2.0.0.html) con
 
 We take backwards-compatibility seriously and work hard to ensure you can rely on a smooth upgrade experience.
 
-We are keen for your feedback; please open an [issue](https://www.github.com/stainless-sdks/rain-hello-world-typescript/issues) with questions, bugs, or suggestions.
+We are keen for your feedback; please open an [issue](https://www.github.com/michaelcc-rain/rain-sdk-typescript/issues) with questions, bugs, or suggestions.
 
 ## Requirements
 
